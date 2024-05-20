@@ -33,12 +33,29 @@ public class UserServiceImpl implements UserService {
         user.setAtesia(userDto.getAtesia());
         user.setPhonenumber(userDto.getPhonenumber());
         user.setBirthday(userDto.getBirthday());
+        user.setId(userDto.getId());
 
         Role role = roleRepository.findByName("ROLE_ADMIN");
         if (role == null) {
             role = checkRoleExist();
         }
         user.setRoles(List.of(role));
+        userRepository.save(user);
+    }
+
+    @Override
+    public UserDto findUserById(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        return convertEntityToDto(user);
+    }
+
+    @Override
+    public void updateUser(Long id, UserDto userDto) {
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        user.setName(userDto.getFirstName() + " " + userDto.getLastName());
+        user.setAtesia(userDto.getAtesia());
+        user.setPhonenumber(userDto.getPhonenumber());
+        user.setBirthday(userDto.getBirthday());
         userRepository.save(user);
     }
 
@@ -69,6 +86,7 @@ public class UserServiceImpl implements UserService {
         userDto.setAtesia(user.getAtesia());
         userDto.setPhonenumber(user.getPhonenumber());
         userDto.setBirthday(user.getBirthday());
+        userDto.setId(user.getId());
         return userDto;
     }
 }

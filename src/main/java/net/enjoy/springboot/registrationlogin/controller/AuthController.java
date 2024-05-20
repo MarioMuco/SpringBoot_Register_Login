@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
@@ -72,5 +73,18 @@ public class AuthController {
     @GetMapping("/login")
     public String login() {
         return "login";
+    }
+
+    @GetMapping("/profile/{id}")
+    public String getUserProfile(@PathVariable("id") Long id, Model model) {
+        UserDto userDto = userService.findUserById(id);
+        model.addAttribute("user", userDto);
+        return "profile";
+    }
+
+    @PostMapping("/profile/{id}")
+    public String updateUserProfile(@PathVariable("id") Long id, @ModelAttribute("user") UserDto userDto) {
+        userService.updateUser(id, userDto);
+        return "redirect:/profile/" + id;
     }
 }

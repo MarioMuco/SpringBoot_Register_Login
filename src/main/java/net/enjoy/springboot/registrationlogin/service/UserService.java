@@ -11,4 +11,8 @@ public interface UserService {
     User findUserByEmail(String email);
 
     List<UserDto> findAllUsers();
+
+    UserDto findUserById(Long id);
+
+    void updateUser(Long id, UserDto userDto);
 }
