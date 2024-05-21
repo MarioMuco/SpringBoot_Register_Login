@@ -15,9 +15,9 @@ public class CustomAuthenticationSuccessHandler  implements AccessDeniedHandler 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response,
                        AccessDeniedException accessDeniedException) throws IOException {
-        // Redirect to your custom access denied page
         String redirectUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/profile/7")
+                .path("/profile/2")
+                //TODO: fix
                 .toUriString();
         response.sendRedirect(redirectUrl);
     }

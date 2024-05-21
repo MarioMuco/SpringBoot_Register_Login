@@ -39,6 +39,7 @@
             <th>Email</th>
             <th>Telefoni</th>
             <th>Ditelindja</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -49,6 +50,12 @@
             <td th:text="${user.email}"></td>
             <td th:text="${user.phonenumber}"></td>
             <td th:text="${user.birthday}"></td>
+            <td>
+                <form th:action="@{/deleteUser/{userId}(userId=${user.id})}" method="post">
+                    <input type="hidden" name="_method" value="delete" />
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </td>
         </tr>
         </tbody>
     </table>
