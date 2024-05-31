@@ -1,5 +1,7 @@
 package net.enjoy.springboot.registrationlogin.controller;
 
+import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import net.enjoy.springboot.registrationlogin.dto.UserDto;
 import net.enjoy.springboot.registrationlogin.entity.User;
@@ -72,6 +74,12 @@ public class AuthController {
         return "login";
     }
 
+    @GetMapping("/profile")
+    public String displayProfile(HttpSession session) {
+        User person = (User) session.getAttribute("loggedInPerson");
+        return "profile";
+    }
+
     @GetMapping("/profile/{id}")
     public String getUserProfile(@PathVariable("id") Long id, Model model) {
         UserDto userDto = userService.findUserById(id);
@@ -85,9 +93,9 @@ public class AuthController {
         return "redirect:/profile/" + id;
     }
 
-    @RequestMapping(value = "/deleteUser/{userId}", method = RequestMethod.POST)
+    @DeleteMapping (value = "/deleteUser/{userId}")
     public String deleteUser(@PathVariable Long userId) {
-        userService.deleteUser(userId);
+        userService.deleteUserById(userId);
         return "redirect:/users";
     }
 }

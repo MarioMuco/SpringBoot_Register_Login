@@ -1,6 +1,7 @@
 package net.enjoy.springboot.registrationlogin.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,14 +25,17 @@ public class User {
     private Long id;
 
     @Column(nullable = false)
+    @Size(max=20)
     private String name;
 
+    @Size(max=20)
     @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
     private String password;
 
+    @Size(max=20)
     @Column(nullable = true)
     private String atesia;
 

@@ -16,7 +16,7 @@ public class CustomAuthenticationSuccessHandler  implements AccessDeniedHandler 
     public void handle(HttpServletRequest request, HttpServletResponse response,
                        AccessDeniedException accessDeniedException) throws IOException {
         String redirectUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/profile/2")
+                .path("/profile")
                 //TODO: fix
                 .toUriString();
         response.sendRedirect(redirectUrl);

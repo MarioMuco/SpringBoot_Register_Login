@@ -23,30 +23,33 @@
                     <h2 class="text-center">User Profile</h2>
                 </div>
                 <div class="card-body">
-                    <form>
+                    <form th:action="@{/profile/{id}(id=${user.id})}" method="post" th:object="${user}">
                         <div class="form-group mb-3">
                             <label class="control-label">First Name</label>
-                            <input type="text" class="form-control" th:value="${user.firstName}" readonly />
+                            <input type="text" class="form-control" th:field="*{firstName}" />
                         </div>
                         <div class="form-group mb-3">
                             <label class="control-label">Last Name</label>
-                            <input type="text" class="form-control" th:value="${user.lastName}" readonly />
+                            <input type="text" class="form-control" th:field="*{lastName}" />
                         </div>
                         <div class="form-group mb-3">
                             <label class="control-label">Email</label>
-                            <input type="text" class="form-control" th:value="${user.email}" readonly />
+                            <input type="email" class="form-control" th:field="*{email}" />
                         </div>
                         <div class="form-group mb-3">
                             <label class="control-label">Atesia</label>
-                            <input type="text" class="form-control" th:value="${user.atesia}" readonly />
+                            <input type="text" class="form-control" th:field="*{atesia}" />
                         </div>
                         <div class="form-group mb-3">
                             <label class="control-label">Phone Number</label>
-                            <input type="text" class="form-control" th:value="${user.phonenumber}" readonly />
+                            <input type="text" class="form-control" th:field="*{phonenumber}" />
                         </div>
                         <div class="form-group mb-3">
                             <label class="control-label">Birthday</label>
-                            <input type="text" class="form-control" th:value="${user.birthday}" readonly />
+                            <input type="date" class="form-control" th:field="*{birthday}" />
+                        </div>
+                        <div class="form-group mb-3">
+                            <button type="submit" class="btn btn-primary">Update Profile</button>
                         </div>
                     </form>
                 </div>
