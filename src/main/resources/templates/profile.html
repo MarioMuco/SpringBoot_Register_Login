@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>User Profile</title>
@@ -34,7 +34,7 @@
                         </div>
                         <div class="form-group mb-3">
                             <label class="control-label">Email</label>
-                            <input type="email" class="form-control" th:field="*{email}" />
+                            <input disabled type="email" class="form-control" th:field="*{email}" />
                         </div>
                         <div class="form-group mb-3">
                             <label class="control-label">Atesia</label>
@@ -52,6 +52,9 @@
                             <button type="submit" class="btn btn-primary">Update Profile</button>
                         </div>
                     </form>
+                    <div sec:authorize="hasRole('ROLE_ADMIN')" class="form-group mb-3">
+                        <a th:href="@{/users}" class="btn btn-primary">Users</a>
+                    </div>
                 </div>
             </div>
         </div>
