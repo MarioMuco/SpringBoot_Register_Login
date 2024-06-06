@@ -26,9 +26,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public void saveUser(UserDto userDto) {
         User user = new User();
-        user.setName(userDto.getFirstName() + " " + userDto.getLastName());
+        user.setName(userDto.getName());
         user.setEmail(userDto.getEmail());
-        //encrypt the password using spring security
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setAtesia(userDto.getAtesia());
         user.setPhonenumber(userDto.getPhonenumber());
@@ -55,9 +54,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(Long id, UserDto userDto) {
-        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
-        user.setName(userDto.getFirstName() + " " + userDto.getLastName());
+    public void updateUser(String username, UserDto userDto) {
+        User user = userRepository.findByEmail(username);
+        user.setName(userDto.getName());
         user.setAtesia(userDto.getAtesia());
         user.setPhonenumber(userDto.getPhonenumber());
         user.setBirthday(userDto.getBirthday());
@@ -84,9 +83,7 @@ public class UserServiceImpl implements UserService {
 
     private UserDto convertEntityToDto(User user) {
         UserDto userDto = new UserDto();
-        String[] name = user.getName().split(" ");
-        userDto.setFirstName(name[0]);
-        userDto.setLastName(name[1]);
+        userDto.setName(user.getName());
         userDto.setEmail(user.getEmail());
         userDto.setAtesia(user.getAtesia());
         userDto.setPhonenumber(user.getPhonenumber());

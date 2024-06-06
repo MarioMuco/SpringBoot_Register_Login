@@ -34,9 +34,11 @@ public class SpringSecurity {
                         authorize
                                 .requestMatchers("/register/**").permitAll()
                                 .requestMatchers("/index").permitAll()
-                                .requestMatchers("/users").hasRole("ADMIN")
+                                .requestMatchers("/users").permitAll()
                                 .requestMatchers("/profile").permitAll()
                                 .requestMatchers("/profile/**").permitAll()
+                                .requestMatchers("/deleteUser/**").permitAll()
+                                .requestMatchers("/login/**").permitAll()
                                 .requestMatchers("/deleteUser/**").permitAll()
                                 .anyRequest().permitAll()
                 )
@@ -44,7 +46,7 @@ public class SpringSecurity {
                         form -> form
                                 .loginPage("/login")
                                 .loginProcessingUrl("/login")
-                                .defaultSuccessUrl("/users")
+                                .defaultSuccessUrl("/profile")
                                 .permitAll()
                 )
                 .logout(

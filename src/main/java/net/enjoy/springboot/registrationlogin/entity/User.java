@@ -25,17 +25,14 @@ public class User {
     private Long id;
 
     @Column(nullable = false)
-    @Size(max=20)
     private String name;
 
-    @Size(max=20)
     @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
     private String password;
 
-    @Size(max=20)
     @Column(nullable = true)
     private String atesia;
 

@@ -6,8 +6,10 @@ import jakarta.validation.Valid;
 import net.enjoy.springboot.registrationlogin.dto.UserDto;
 import net.enjoy.springboot.registrationlogin.entity.User;
 import net.enjoy.springboot.registrationlogin.service.UserService;
-import net.enjoy.springboot.registrationlogin.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,22 +26,18 @@ public class AuthController {
         this.userService = userService;
     }
 
-    // handler method to handle home page request
     @GetMapping("/index")
     public String home() {
         return "index";
     }
 
-    // handler method to handle user registration form request
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
-        // create model object to store form data
         UserDto user = new UserDto();
         model.addAttribute("user", user);
         return "register";
     }
 
-    // handler method to handle user registration form submit request
     @PostMapping("/register/save")
     public String registration(@Valid @ModelAttribute("user") UserDto userDto,
                                BindingResult result,
@@ -60,7 +58,6 @@ public class AuthController {
         return "redirect:/register?success";
     }
 
-    // handler method to handle list of users
     @GetMapping("/users")
     public String users(Model model) {
         List<UserDto> users = userService.findAllUsers();
@@ -68,34 +65,32 @@ public class AuthController {
         return "users";
     }
 
-    // handler method to handle login request
     @GetMapping("/login")
     public String login() {
         return "login";
     }
 
-    @GetMapping("/profile")
-    public String displayProfile(HttpSession session) {
-        User person = (User) session.getAttribute("loggedInPerson");
+    @PostMapping("/loginuser")
+    public String login(HttpSession session, @RequestParam("username") String username) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth.getPrincipal() instanceof UserDetails userDetails) {
+            User user = userService.findUserByEmail(userDetails.getUsername());
+            session.setAttribute("loggedInPerson", user);
+        }
+        return "redirect:/profile/" + username;
+    }
+
+    @GetMapping("/profile/{username}")
+    public String displayProfile(@PathVariable("username") String username, Model model) {
+        User user = userService.findUserByEmail(username);
+        model.addAttribute("user", user);
+        model.addAttribute("roles", user.getRoles());
         return "profile";
     }
 
-    @GetMapping("/profile/{id}")
-    public String getUserProfile(@PathVariable("id") Long id, Model model) {
-        UserDto userDto = userService.findUserById(id);
-        model.addAttribute("user", userDto);
-        return "profile";
-    }
-
-    @PostMapping("/profile/{id}")
-    public String updateUserProfile(@PathVariable("id") Long id, @ModelAttribute("user") UserDto userDto) {
-        userService.updateUser(id, userDto);
-        return "redirect:/profile/" + id;
-    }
-
-    @DeleteMapping (value = "/deleteUser/{userId}")
-    public String deleteUser(@PathVariable Long userId) {
-        userService.deleteUserById(userId);
-        return "redirect:/users";
+    @PostMapping("/profile/{username}")
+    public String updateUserProfile(@PathVariable("username") String username, @ModelAttribute("user") UserDto userDto) {
+        userService.updateUser(username, userDto);
+        return "redirect:/profile/" + username;
     }
 }
