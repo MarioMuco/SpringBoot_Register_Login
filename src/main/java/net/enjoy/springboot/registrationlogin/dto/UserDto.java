@@ -24,4 +24,5 @@ public class UserDto {
     private String atesia;
     private String phonenumber;
     private String birthday;
+    private String image;
 }

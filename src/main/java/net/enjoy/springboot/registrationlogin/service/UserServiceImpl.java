@@ -60,6 +60,7 @@ public class UserServiceImpl implements UserService {
         user.setAtesia(userDto.getAtesia());
         user.setPhonenumber(userDto.getPhonenumber());
         user.setBirthday(userDto.getBirthday());
+        user.setImage(userDto.getImage());
         userRepository.save(user);
     }
 
@@ -89,6 +90,7 @@ public class UserServiceImpl implements UserService {
         userDto.setPhonenumber(user.getPhonenumber());
         userDto.setBirthday(user.getBirthday());
         userDto.setId(user.getId());
+        userDto.setImage(user.getImage());
         return userDto;
     }
 
